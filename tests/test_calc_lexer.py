@@ -267,3 +267,15 @@ def test_lexer_as_context_manager_does_not_restore_the_status_if_no_error():
         assert l.get_token() == token.Token(clex.INTEGER, 3)
 
     assert l.get_token() == token.Token(clex.LITERAL, '*')
+
+
+def test_lexer_as_context_manager_restores_the_status_if_token_error():
+    l = clex.CalcLexer()
+    l.load('3 * 5')
+
+    with l:
+        l.get_token()
+        l.get_token()
+        raise clex.TokenError
+
+    assert l.get_token() == token.Token(clex.INTEGER, 3)

@@ -23,10 +23,14 @@ class CalcLexer:
         self._current_token = None
 
     def __enter__(self):
-        pass
+        self.stash()
 
     def __exit__(self, etype, evalue, etrace):
-        pass
+        if etype:
+            self.pop()
+
+        if etype in [TokenError]:
+            return True
 
     def load(self, text):
         self._text_storage.load(text)
