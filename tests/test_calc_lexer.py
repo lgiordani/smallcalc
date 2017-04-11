@@ -249,3 +249,11 @@ def test_get_tokens_understands_exponentiation():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_lexer_as_context_manager():
+    l = clex.CalcLexer()
+    l.load('abcd')
+
+    with l:
+        assert l.get_token() == token.Token(clex.NAME, 'abcd')

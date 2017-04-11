@@ -22,6 +22,12 @@ class CalcLexer:
         self._status = []
         self._current_token = None
 
+    def __enter__(self):
+        pass
+
+    def __exit__(self, etype, evalue, etrace):
+        pass
+
     def load(self, text):
         self._text_storage.load(text)
 
