@@ -11,3 +11,26 @@ def test_parse_integer():
         'type': 'integer',
         'value': 5
     }
+
+
+def test_parse_expression():
+    p = cpar.CalcParser()
+    p.lexer.load("2+3")
+
+    node = p.parse_expression()
+
+    assert node.asdict() == {
+        'type': 'binary',
+        'left': {
+            'type': 'integer',
+            'value': 2
+        },
+        'right': {
+            'type': 'integer',
+            'value': 3
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }
