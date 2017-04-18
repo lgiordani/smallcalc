@@ -4,6 +4,7 @@ from smallcalc import tok as token
 EOF = 'EOF'
 EOL = 'EOL'
 INTEGER = 'INTEGER'
+LITERAL = 'LITERAL'
 
 
 class CalcLexer:
@@ -48,7 +49,15 @@ class CalcLexer:
                 token.Token(EOF)
             )
 
+    def _process_literal(self):
+        return self._set_current_token_and_skip(
+            token.Token(LITERAL, self._current_char)
+        )
+
     def _process_integer(self):
+        if not self._current_char.isdigit():
+            return None
+
         return self._set_current_token_and_skip(
             token.Token(INTEGER, self._current_char)
         )
@@ -65,6 +74,10 @@ class CalcLexer:
         integer = self._process_integer()
         if integer:
             return integer
+
+        literal = self._process_literal()
+        if literal:
+            return literal
 
     def get_tokens(self):
         t = self.get_token()
