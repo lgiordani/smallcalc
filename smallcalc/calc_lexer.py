@@ -131,3 +131,10 @@ class CalcLexer:
         tokens.append(token.Token('EOF'))
 
         return tokens
+
+    def peek_token(self):
+        self.stash()
+        token = self.get_token()
+        self.pop()
+
+        return token

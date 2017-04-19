@@ -111,3 +111,11 @@ def test_lexer_can_stash_and_pop_status():
     l.pop()
 
     assert l.get_token() == token.Token(clex.INTEGER, '3')
+
+
+def test_lexer_can_peek_token():
+    l = clex.CalcLexer()
+    l.load('3 + 5')
+
+    l.get_token()
+    assert l.peek_token() == token.Token(clex.LITERAL, '+')
