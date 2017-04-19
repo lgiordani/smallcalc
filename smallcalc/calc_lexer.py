@@ -51,6 +51,18 @@ class CalcLexer:
                 token.Token(EOF)
             )
 
+    def _process_whitespace(self):
+        regexp = re.compile('\ +')
+
+        match = regexp.match(
+            self._text_storage.tail
+        )
+
+        if not match:
+            return None
+
+        self._text_storage.skip(len(match.group()))
+
     def _process_literal(self):
         return self._set_current_token_and_skip(
             token.Token(LITERAL, self._current_char)
@@ -60,8 +72,8 @@ class CalcLexer:
         regexp = re.compile('\d+')
 
         match = regexp.match(
-                self._text_storage.tail
-            )
+            self._text_storage.tail
+        )
 
         if not match:
             return None
@@ -80,6 +92,8 @@ class CalcLexer:
         eol = self._process_eol()
         if eol:
             return eol
+
+        self._process_whitespace()
 
         integer = self._process_integer()
         if integer:
