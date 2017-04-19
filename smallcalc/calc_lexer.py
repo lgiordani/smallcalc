@@ -1,3 +1,5 @@
+import re
+
 from smallcalc import text_buffer
 from smallcalc import tok as token
 
@@ -55,11 +57,19 @@ class CalcLexer:
         )
 
     def _process_integer(self):
-        if not self._current_char.isdigit():
+        regexp = re.compile('\d+')
+
+        match = regexp.match(
+                self._text_storage.tail
+            )
+
+        if not match:
             return None
 
+        token_string = match.group()
+
         return self._set_current_token_and_skip(
-            token.Token(INTEGER, self._current_char)
+            token.Token(INTEGER, int(token_string))
         )
 
     def get_token(self):

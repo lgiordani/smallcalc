@@ -44,3 +44,15 @@ def test_get_tokens_understands_unspaced_sum_of_integers():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_get_tokens_understands_multiple_digits():
+    l = clex.CalcLexer()
+
+    l.load('356')
+
+    assert l.get_tokens() == [
+        token.Token(clex.INTEGER, '356'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
