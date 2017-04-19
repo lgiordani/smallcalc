@@ -85,3 +85,18 @@ def test_get_tokens_understands_subtraction():
         token.Token(clex.EOF)
     ]
 
+
+def test_get_tokens_understands_multiple_operations():
+    l = clex.CalcLexer()
+
+    l.load('3 + 5 - 7')
+
+    assert l.get_tokens() == [
+        token.Token(clex.INTEGER, '3'),
+        token.Token(clex.LITERAL, '+'),
+        token.Token(clex.INTEGER, '5'),
+        token.Token(clex.LITERAL, '-'),
+        token.Token(clex.INTEGER, '7'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
