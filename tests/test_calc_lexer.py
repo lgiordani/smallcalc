@@ -100,3 +100,14 @@ def test_get_tokens_understands_multiple_operations():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_lexer_can_stash_and_pop_status():
+    l = clex.CalcLexer()
+    l.load('3 5')
+
+    l.stash()
+    l.get_token()
+    l.pop()
+
+    assert l.get_token() == token.Token(clex.INTEGER, '3')

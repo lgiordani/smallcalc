@@ -13,6 +13,8 @@ class CalcLexer:
 
     def __init__(self, text=''):
         self._text_storage = text_buffer.TextBuffer(text)
+        self._status = []
+        self._current_token = None
 
     def load(self, text):
         self._text_storage.load(text)
@@ -24,6 +26,21 @@ class CalcLexer:
     @property
     def _current_line(self):
         return self._text_storage.current_line
+
+    @property
+    def _current_status(self):
+        status = {}
+        status['text_storage'] = self._text_storage.position
+        status['current_token'] = self._current_token
+        return status
+
+    def stash(self):
+        self._status.append(self._current_status)
+
+    def pop(self):
+        status = self._status.pop()
+        self._text_storage.goto(*status['text_storage'])
+        self._current_token = status['current_token']
 
     def _set_current_token_and_skip(self, token):
         self._text_storage.skip(len(token))
