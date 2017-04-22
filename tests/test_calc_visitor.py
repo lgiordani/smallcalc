@@ -153,3 +153,31 @@ def test_visitor_unary_minus():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (-5, 'integer')
+
+
+def test_visitor_unary_plus():
+    ast = {
+        'type': 'unary',
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        },
+        'content': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 2
+            },
+            'right': {
+                'type': 'integer',
+                'value': 3
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '+'
+            }
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (5, 'integer')
