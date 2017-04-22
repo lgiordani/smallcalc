@@ -258,3 +258,33 @@ def test_parse_factor_supports_unary_operator():
             'value': 5
         }
     }
+
+
+def test_parse_factor_supports_negative_expressions():
+    p = cpar.CalcParser()
+    p.lexer.load("-(2 + 3)")
+
+    node = p.parse_factor()
+
+    assert node.asdict() == {
+        'type': 'unary',
+        'operator': {
+            'type': 'literal',
+            'value': '-'
+        },
+        'content': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 2
+            },
+            'right': {
+                'type': 'integer',
+                'value': 3
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '+'
+            }
+        }
+    }
