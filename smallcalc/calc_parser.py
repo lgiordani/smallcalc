@@ -59,6 +59,24 @@ class BinaryNode(Node):
         return result
 
 
+class UnaryNode(Node):
+
+    node_type = 'unary'
+
+    def __init__(self, operator, content):
+        self.operator = operator
+        self.content = content
+
+    def asdict(self):
+        result = {
+            'type': self.node_type,
+            'operator': self.operator.asdict(),
+            'content': self.content.asdict()
+        }
+
+        return result
+
+
 class CalcParser:
 
     def __init__(self):
@@ -74,6 +92,11 @@ class CalcParser:
 
     def parse_factor(self):
         next_token = self.lexer.peek_token()
+
+        if next_token.type == clex.LITERAL and next_token.value == '-':
+            operator = self.parse_addsymbol()
+            factor = self.parse_factor()
+            return UnaryNode(operator, factor)
 
         if next_token.type == clex.LITERAL and next_token.value == '(':
             self.lexer.get_token()

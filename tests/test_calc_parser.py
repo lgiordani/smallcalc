@@ -239,3 +239,22 @@ def test_parse_parentheses_change_priority():
             'value': '*'
         }
     }
+
+
+def test_parse_factor_supports_unary_operator():
+    p = cpar.CalcParser()
+    p.lexer.load("-5")
+
+    node = p.parse_factor()
+
+    assert node.asdict() == {
+        'type': 'unary',
+        'operator': {
+            'type': 'literal',
+            'value': '-'
+        },
+        'content': {
+            'type': 'integer',
+            'value': 5
+        }
+    }
