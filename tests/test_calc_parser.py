@@ -318,3 +318,15 @@ def test_parse_factor_supports_unary_plus():
             }
         }
     }
+
+
+def test_parse_factor_variable():
+    p = cpar.CalcParser()
+    p.lexer.load("somevar")
+
+    node = p.parse_factor()
+
+    assert node.asdict() == {
+        'type': 'variable',
+        'value': 'somevar'
+    }

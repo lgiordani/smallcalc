@@ -33,6 +33,11 @@ class LiteralNode(ValueNode):
     node_type = 'literal'
 
 
+class VariableNode(ValueNode):
+
+    node_type = 'variable'
+
+
 class BinaryNode(Node):
 
     node_type = 'binary'
@@ -103,6 +108,10 @@ class CalcParser:
             expression = self.parse_expression()
             self.lexer.discard_type(clex.LITERAL)
             return expression
+
+        if next_token.type == clex.NAME:
+            t = self.lexer.get_token()
+            return VariableNode(t.value)
 
         return self.parse_integer()
 
