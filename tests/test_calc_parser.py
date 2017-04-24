@@ -330,3 +330,19 @@ def test_parse_factor_variable():
         'type': 'variable',
         'value': 'somevar'
     }
+
+
+def test_parse_assignment():
+    p = cpar.CalcParser()
+    p.lexer.load("x = 5")
+
+    node = p.parse_assignment()
+
+    assert node.asdict() == {
+        'type': 'assignment',
+        'variable': 'x',
+        'value': {
+            'type': 'integer',
+            'value': 5
+        }
+    }

@@ -82,6 +82,22 @@ class UnaryNode(Node):
         return result
 
 
+class AssignmentNode(Node):
+
+    node_type = 'assignment'
+
+    def __init__(self, variable, value):
+        self.variable = variable
+        self.value = value
+
+    def asdict(self):
+        return {
+            'type': self.node_type,
+            'variable': self.variable.value,
+            'value': self.value.asdict(),
+        }
+
+
 class CalcParser:
 
     def __init__(self):
@@ -94,6 +110,10 @@ class CalcParser:
     def parse_integer(self):
         t = self.lexer.get_token()
         return IntegerNode(t.value)
+
+    def _parse_variable(self):
+        t = self.lexer.get_token()
+        return VariableNode(t.value)
 
     def parse_factor(self):
         next_token = self.lexer.peek_token()
@@ -146,3 +166,10 @@ class CalcParser:
             next_token = self.lexer.peek_token()
 
         return left
+
+    def parse_assignment(self):
+        variable = self._parse_variable()
+        self.lexer.discard_type(clex.LITERAL)
+        value = self.parse_expression()
+
+        return AssignmentNode(variable, value)
