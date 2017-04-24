@@ -108,7 +108,7 @@ class CalcLexer:
         )
 
     def _process_name(self):
-        regexp = re.compile('[a-z]+')
+        regexp = re.compile('[a-zA-Z_]+')
 
         match = regexp.match(
             self._text_storage.tail

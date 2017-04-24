@@ -211,3 +211,27 @@ def test_get_tokens_understands_letters():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_get_tokens_understands_uppercase_letters():
+    l = clex.CalcLexer()
+
+    l.load('SomeVar')
+
+    assert l.get_tokens() == [
+        token.Token(clex.NAME, 'SomeVar'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
+
+
+def test_get_tokens_understands_names_with_underscores():
+    l = clex.CalcLexer()
+
+    l.load('some_var')
+
+    assert l.get_tokens() == [
+        token.Token(clex.NAME, 'some_var'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
