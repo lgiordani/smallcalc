@@ -7,6 +7,7 @@ EOF = 'EOF'
 EOL = 'EOL'
 INTEGER = 'INTEGER'
 LITERAL = 'LITERAL'
+NAME = 'NAME'
 
 
 class TokenError(ValueError):
@@ -106,6 +107,22 @@ class CalcLexer:
             token.Token(INTEGER, int(token_string))
         )
 
+    def _process_name(self):
+        regexp = re.compile('[a-z]+')
+
+        match = regexp.match(
+            self._text_storage.tail
+        )
+
+        if not match:
+            return None
+
+        token_string = match.group()
+
+        return self._set_current_token_and_skip(
+            token.Token(NAME, token_string)
+        )
+
     def discard(self, token):
         if self.get_token() != token:
             raise TokenError(
@@ -132,6 +149,10 @@ class CalcLexer:
             return eol
 
         self._process_whitespace()
+
+        name = self._process_name()
+        if name:
+            return name
 
         integer = self._process_integer()
         if integer:

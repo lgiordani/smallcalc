@@ -199,3 +199,15 @@ def test_discard_type_checks_equality():
 
     with pytest.raises(clex.TokenError):
         l.discard_type(clex.LITERAL)
+
+
+def test_get_tokens_understands_letters():
+    l = clex.CalcLexer()
+
+    l.load('somevar')
+
+    assert l.get_tokens() == [
+        token.Token(clex.NAME, 'somevar'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
