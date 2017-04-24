@@ -181,3 +181,20 @@ def test_visitor_unary_plus():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (5, 'integer')
+
+
+def test_visitor_assignment():
+    ast = {
+        'type': 'assignment',
+        'variable': 'x',
+        'value': {
+            'type': 'integer',
+            'value': 5
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (None, None)
+    assert v.isvariable('x') is True
+    assert v.valueof('x') == 5
+    assert v.typeof('x') == 'integer'

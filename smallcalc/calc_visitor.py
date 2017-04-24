@@ -1,5 +1,17 @@
 class CalcVisitor:
 
+    def __init__(self):
+        self.variables = {}
+
+    def isvariable(self, name):
+        return name in self.variables
+
+    def valueof(self, name):
+        return self.variables[name]['value']
+
+    def typeof(self, name):
+        return self.variables[name]['type']
+
     def visit(self, node):
         if node['type'] == 'integer':
             return node['value'], node['type']
@@ -27,3 +39,12 @@ class CalcVisitor:
                 return lvalue * rvalue, rtype
             elif operator == '/':
                 return lvalue // rvalue, rtype
+
+        if node['type'] == 'assignment':
+            right_value, right_type = self.visit(node['value'])
+            self.variables[node['variable']] = {
+                'value': right_value,
+                'type': right_type
+            }
+
+            return None, None
