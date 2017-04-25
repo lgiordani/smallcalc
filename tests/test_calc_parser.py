@@ -411,3 +411,37 @@ def test_parse_assignment_expression_with_variables():
             },
         }
     }
+
+
+def test_parse_line_supports_expression():
+    p = cpar.CalcParser()
+    p.lexer.load("2 * x + 4")
+
+    node = p.parse_line()
+
+    assert node.asdict() == {
+        'type': 'binary',
+        'left': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 2
+            },
+            'right': {
+                'type': 'variable',
+                'value': 'x'
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '*'
+            }
+        },
+        'right': {
+            'type': 'integer',
+            'value': 4
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }

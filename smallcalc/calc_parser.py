@@ -173,3 +173,6 @@ class CalcParser:
         value = self.parse_expression()
 
         return AssignmentNode(variable, value)
+
+    def parse_line(self):
+        return self.parse_expression()
