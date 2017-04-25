@@ -16,6 +16,9 @@ class CalcVisitor:
         if node['type'] == 'integer':
             return node['value'], node['type']
 
+        if node['type'] == 'variable':
+            return self.valueof(node['value']), self.typeof(node['value'])
+
         if node['type'] == 'unary':
             operator = node['operator']['value']
             cvalue, ctype = self.visit(node['content'])

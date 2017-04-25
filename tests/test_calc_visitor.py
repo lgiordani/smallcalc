@@ -198,3 +198,23 @@ def test_visitor_assignment():
     assert v.isvariable('x') is True
     assert v.valueof('x') == 5
     assert v.typeof('x') == 'integer'
+
+
+def test_visitor_variable():
+    assignment_ast = {
+        'type': 'assignment',
+        'variable': 'x',
+        'value': {
+            'type': 'integer',
+            'value': 123
+        }
+    }
+
+    read_ast = {
+        'type': 'variable',
+        'value': 'x'
+    }
+
+    v = cvis.CalcVisitor()
+    v.visit(assignment_ast)
+    assert v.visit(read_ast) == (123, 'integer')
