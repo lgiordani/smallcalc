@@ -11,7 +11,7 @@ def main():
             text = input('smallcalc :> ')
             p.lexer.load(text)
 
-            node = p.parse_expression()
+            node = p.parse_line()
             res = v.visit(node.asdict())
 
             print(res)
