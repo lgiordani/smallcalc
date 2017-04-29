@@ -445,3 +445,19 @@ def test_parse_line_supports_expression():
             'value': '+'
         }
     }
+
+
+def test_parse_line_supports_assigment():
+    p = cpar.CalcParser()
+    p.lexer.load("x = 5")
+
+    node = p.parse_line()
+
+    assert node.asdict() == {
+        'type': 'assignment',
+        'variable': 'x',
+        'value': {
+            'type': 'integer',
+            'value': 5
+        }
+    }

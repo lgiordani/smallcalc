@@ -1,3 +1,4 @@
+from smallcalc import tok as token
 from smallcalc import calc_lexer as clex
 
 
@@ -169,10 +170,15 @@ class CalcParser:
 
     def parse_assignment(self):
         variable = self._parse_variable()
-        self.lexer.discard_type(clex.LITERAL)
+        self.lexer.discard(token.Token(clex.LITERAL, '='))
         value = self.parse_expression()
 
         return AssignmentNode(variable, value)
 
     def parse_line(self):
-        return self.parse_expression()
+        try:
+            self.lexer.stash()
+            return self.parse_assignment()
+        except clex.TokenError:
+            self.lexer.pop()
+            return self.parse_expression()
