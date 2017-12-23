@@ -57,3 +57,37 @@ def test_parse_expression_understands_subtraction():
             'value': '-'
         }
     }
+
+
+def test_parse_expression_with_multiple_operations():
+    p = cpar.CalcParser()
+    p.lexer.load("2 + 3 - 4")
+
+    node = p.parse_expression()
+
+    assert node.asdict() == {
+        'type': 'binary',
+        'left': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 2
+            },
+            'right': {
+                'type': 'integer',
+                'value': 3
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '+'
+            }
+        },
+        'right': {
+            'type': 'integer',
+            'value': 4
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '-'
+        }
+    }
