@@ -1,3 +1,5 @@
+import pytest
+
 from smallcalc import tok as token
 from smallcalc import calc_lexer as clex
 
@@ -165,3 +167,35 @@ def test_get_tokens_understands_parentheses():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_discard_tokens():
+    l = clex.CalcLexer()
+    l.load('3 + 5')
+
+    l.discard(token.Token(clex.INTEGER, '3'))
+    assert l.get_token() == token.Token(clex.LITERAL, '+')
+
+
+def test_discard_checks_equality():
+    l = clex.CalcLexer()
+    l.load('3 + 5')
+
+    with pytest.raises(clex.TokenError):
+        l.discard(token.Token(clex.INTEGER, '5'))
+
+
+def test_discard_tokens_by_type():
+    l = clex.CalcLexer()
+    l.load('3 + 5')
+
+    l.discard_type(clex.INTEGER)
+    assert l.get_token() == token.Token(clex.LITERAL, '+')
+
+
+def test_discard_type_checks_equality():
+    l = clex.CalcLexer()
+    l.load('3 + 5')
+
+    with pytest.raises(clex.TokenError):
+        l.discard_type(clex.LITERAL)

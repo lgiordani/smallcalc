@@ -82,7 +82,7 @@ class CalcParser:
     def __init__(self):
         self.lexer = clex.CalcLexer()
 
-    def parse_addsymbol(self):
+    def _parse_symbol(self):
         t = self.lexer.get_token()
         return LiteralNode(t.value)
 
@@ -94,14 +94,14 @@ class CalcParser:
         next_token = self.lexer.peek_token()
 
         if next_token.type == clex.LITERAL and next_token.value in ['-', '+']:
-            operator = self.parse_addsymbol()
+            operator = self._parse_symbol()
             factor = self.parse_factor()
             return UnaryNode(operator, factor)
 
         if next_token.type == clex.LITERAL and next_token.value == '(':
-            self.lexer.get_token()
+            self.lexer.discard_type(clex.LITERAL)
             expression = self.parse_expression()
-            self.lexer.get_token()
+            self.lexer.discard_type(clex.LITERAL)
             return expression
 
         return self.parse_integer()
@@ -113,8 +113,8 @@ class CalcParser:
 
         while next_token.type == clex.LITERAL\
                 and next_token.value in ['*', '/']:
-            operator = self.parse_addsymbol()
-            right = self.parse_integer()
+            operator = self._parse_symbol()
+            right = self.parse_factor()
 
             left = BinaryNode(left, operator, right)
 
@@ -129,7 +129,7 @@ class CalcParser:
 
         while next_token.type == clex.LITERAL\
                 and next_token.value in ['+', '-']:
-            operator = self.parse_addsymbol()
+            operator = self._parse_symbol()
             right = self.parse_term()
 
             left = BinaryNode(left, operator, right)

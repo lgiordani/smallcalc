@@ -9,6 +9,11 @@ INTEGER = 'INTEGER'
 LITERAL = 'LITERAL'
 
 
+class TokenError(ValueError):
+
+    """ The expected token cannot be found """
+
+
 class CalcLexer:
 
     def __init__(self, text=''):
@@ -100,6 +105,22 @@ class CalcLexer:
         return self._set_current_token_and_skip(
             token.Token(INTEGER, int(token_string))
         )
+
+    def discard(self, token):
+        if self.get_token() != token:
+            raise TokenError(
+                'Expected token {}, found {}'.format(
+                    token, self._current_token
+                ))
+
+    def discard_type(self, _type):
+        t = self.get_token()
+
+        if t.type != _type:
+            raise TokenError(
+                'Expected token of type {}, found {}'.format(
+                    _type, self._current_token.type
+                ))
 
     def get_token(self):
         eof = self._process_eof()
