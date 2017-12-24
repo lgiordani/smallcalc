@@ -51,3 +51,35 @@ def test_visitor_expression_subtraction():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (1, 'integer')
+
+
+def test_visitor_expression_with_multiple_operations():
+    ast = {
+        'type': 'binary',
+        'left': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 3
+            },
+            'right': {
+                'type': 'integer',
+                'value': 4
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '-'
+            }
+        },
+        'right': {
+            'type': 'integer',
+            'value': 200
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (199, 'integer')
