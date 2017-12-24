@@ -9,3 +9,24 @@ def test_visitor_integer():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (12, 'integer')
+
+
+def test_visitor_expression_sum():
+    ast = {
+        'type': 'binary',
+        'left': {
+                'type': 'integer',
+                'value': 5
+        },
+        'right': {
+            'type': 'integer',
+            'value': 4
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (9, 'integer')
