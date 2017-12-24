@@ -148,3 +148,37 @@ def test_parse_term_with_multiple_operations():
             'value': '/'
         }
     }
+
+
+def test_parse_expression_with_term():
+    p = cpar.CalcParser()
+    p.lexer.load("2 + 3 * 4")
+
+    node = p.parse_expression()
+
+    assert node.asdict() == {
+        'type': 'binary',
+        'left': {
+            'type': 'integer',
+            'value': 2
+        },
+        'right': {
+            'type': 'binary',
+            'left': {
+                'type': 'integer',
+                'value': 3
+            },
+            'right': {
+                'type': 'integer',
+                'value': 4
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '*'
+            }
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }
