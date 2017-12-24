@@ -12,5 +12,9 @@ class CalcVisitor:
 
             if operator == '+':
                 return lvalue + rvalue, rtype
-            else:
+            elif operator == '-':
                 return lvalue - rvalue, rtype
+            elif operator == '*':
+                return lvalue * rvalue, rtype
+            elif operator == '/':
+                return lvalue // rvalue, rtype
