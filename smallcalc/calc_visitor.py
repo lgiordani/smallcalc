@@ -8,4 +8,9 @@ class CalcVisitor:
             lvalue, ltype = self.visit(node['left'])
             rvalue, rtype = self.visit(node['right'])
 
-            return lvalue + rvalue, rtype
+            operator = node['operator']['value']
+
+            if operator == '+':
+                return lvalue + rvalue, rtype
+            else:
+                return lvalue - rvalue, rtype
