@@ -4,6 +4,13 @@ class CalcVisitor:
         if node['type'] == 'integer':
             return node['value'], node['type']
 
+        if node['type'] == 'unary':
+            operator = node['operator']['value']
+            cvalue, ctype = self.visit(node['content'])
+
+            if operator == '-':
+                return - cvalue, ctype
+
         if node['type'] == 'binary':
             lvalue, ltype = self.visit(node['left'])
             rvalue, rtype = self.visit(node['right'])
