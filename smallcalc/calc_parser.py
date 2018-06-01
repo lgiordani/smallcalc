@@ -130,10 +130,10 @@ class CalcParser:
     def parse_factor(self):
         next_token = self.lexer.peek_token()
 
-        if next_token.type == clex.LITERAL and next_token.value in ['-', '+']:
-            operator = self._parse_literal()
-            factor = self.parse_factor()
-            return UnaryNode(operator, factor)
+        with self.lexer:
+            operator = self._parse_literal(['+', '-'])
+            content = self.parse_factor()
+            return UnaryNode(operator, content)
 
         if next_token.type == clex.LITERAL and next_token.value == '(':
             self.lexer.discard_type(clex.LITERAL)
