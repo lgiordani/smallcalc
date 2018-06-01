@@ -235,3 +235,17 @@ def test_get_tokens_understands_names_with_underscores():
         token.Token(clex.EOL),
         token.Token(clex.EOF)
     ]
+
+
+def test_get_tokens_understands_exponentiation():
+    l = clex.CalcLexer()
+
+    l.load('2 ^ 3')
+
+    assert l.get_tokens() == [
+        token.Token(clex.INTEGER, '2'),
+        token.Token(clex.LITERAL, '^'),
+        token.Token(clex.INTEGER, '3'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]
