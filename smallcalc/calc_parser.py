@@ -111,6 +111,12 @@ class CalcParser:
     def _parse_literal(self, values=None):
         t = self.lexer.get_token()
 
+        if t.type != clex.LITERAL:
+            raise clex.TokenError
+
+        if values and t.value not in values:
+            raise clex.TokenError
+
         return LiteralNode(t.value)
 
     def parse_integer(self):
