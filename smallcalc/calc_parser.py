@@ -125,11 +125,13 @@ class CalcParser:
 
     def _parse_variable(self):
         t = self.lexer.get_token()
+
+        if t.type != clex.NAME:
+            raise clex.TokenError
+
         return VariableNode(t.value)
 
     def parse_factor(self):
-        next_token = self.lexer.peek_token()
-
         with self.lexer:
             operator = self._parse_literal(['+', '-'])
             content = self.parse_factor()
@@ -141,19 +143,16 @@ class CalcParser:
             self._parse_literal([')'])
             return expression
 
-        if next_token.type == clex.NAME:
-            t = self.lexer.get_token()
-            return VariableNode(t.value)
+        with self.lexer:
+            return self._parse_variable()
 
         return self.parse_integer()
 
     def parse_exponentiation(self):
         left = self.parse_factor()
 
-        next_token = self.lexer.peek_token()
-
-        if next_token.type == clex.LITERAL and next_token.value == '^':
-            operator = self._parse_literal()
+        with self.lexer:
+            operator = self._parse_literal(['^'])
             right = self.parse_exponentiation()
 
             return PowerNode(left, operator, right)
