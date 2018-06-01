@@ -193,9 +193,7 @@ class CalcParser:
         return AssignmentNode(variable, value)
 
     def parse_line(self):
-        try:
-            self.lexer.stash()
+        with self.lexer:
             return self.parse_assignment()
-        except clex.TokenError:
-            self.lexer.pop()
-            return self.parse_expression()
+
+        return self.parse_expression()
