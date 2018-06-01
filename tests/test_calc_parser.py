@@ -484,3 +484,101 @@ def test_parse_exponentiation():
             'value': '^'
         }
     }
+
+
+def test_parse_exponentiation_with_other_operators():
+    p = cpar.CalcParser()
+    p.lexer.load("3 * 2 ^ 3")
+
+    node = p.parse_term()
+
+    assert node.asdict() == {
+        'type': 'binary',
+        'operator': {
+            'type': 'literal',
+            'value': '*'
+        },
+        'left': {
+            'type': 'integer',
+            'value': 3
+        },
+        'right': {
+            'type': 'exponentiation',
+            'left': {
+                'type': 'integer',
+                'value': 2
+            },
+            'right': {
+                'type': 'integer',
+                'value': 3
+            },
+            'operator': {
+                'type': 'literal',
+                'value': '^'
+            }
+        }
+    }
+
+
+def test_parse_exponentiation_with_parenthesis():
+    p = cpar.CalcParser()
+    p.lexer.load("(3 + 2) ^ 3")
+
+    node = p.parse_term()
+
+    assert node.asdict() == {
+        'type': 'exponentiation',
+        'operator': {
+            'type': 'literal',
+            'value': '^'
+        },
+        'left': {
+            'type': 'binary',
+            'operator': {
+                'type': 'literal',
+                'value': '+'
+            },
+            'left': {
+                'type': 'integer',
+                'value': 3
+            },
+            'right': {
+                'type': 'integer',
+                'value': 2
+            }
+        },
+        'right': {
+            'type': 'integer',
+            'value': 3
+        }
+    }
+
+
+def test_parse_exponentiation_with_negative_base():
+    p = cpar.CalcParser()
+    p.lexer.load("-2 ^ 2")
+
+    node = p.parse_exponentiation()
+
+    assert node.asdict() == {
+        'type': 'exponentiation',
+        'operator': {
+            'type': 'literal',
+            'value': '^'
+        },
+        'left': {
+            'type': 'unary',
+            'operator': {
+                'type': 'literal',
+                'value': '-'
+            },
+            'content': {
+                'type': 'integer',
+                'value': 2
+            }
+        },
+        'right': {
+            'type': 'integer',
+            'value': 2
+        }
+    }

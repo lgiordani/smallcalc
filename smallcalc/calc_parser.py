@@ -154,14 +154,14 @@ class CalcParser:
         return left
 
     def parse_term(self):
-        left = self.parse_factor()
+        left = self.parse_exponentiation()
 
         next_token = self.lexer.peek_token()
 
         while next_token.type == clex.LITERAL\
                 and next_token.value in ['*', '/']:
             operator = self._parse_symbol()
-            right = self.parse_factor()
+            right = self.parse_exponentiation()
 
             left = BinaryNode(left, operator, right)
 
