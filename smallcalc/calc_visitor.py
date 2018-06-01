@@ -51,3 +51,9 @@ class CalcVisitor:
             }
 
             return None, None
+
+        if node['type'] == 'exponentiation':
+            lvalue, ltype = self.visit(node['left'])
+            rvalue, rtype = self.visit(node['right'])
+
+            return lvalue ** rvalue, ltype

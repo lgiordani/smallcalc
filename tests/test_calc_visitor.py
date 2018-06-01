@@ -218,3 +218,24 @@ def test_visitor_variable():
     v = cvis.CalcVisitor()
     v.visit(assignment_ast)
     assert v.visit(read_ast) == (123, 'integer')
+
+
+def test_visitor_exponentiation():
+    ast = {
+        'type': 'exponentiation',
+        'left': {
+            'type': 'integer',
+            'value': 2
+        },
+        'right': {
+            'type': 'integer',
+            'value': 3
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '^'
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (8, 'integer')
