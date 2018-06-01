@@ -83,6 +83,10 @@ class UnaryNode(Node):
         return result
 
 
+class PowerNode(BinaryNode):
+    node_type = 'exponentiation'
+
+
 class AssignmentNode(Node):
 
     node_type = 'assignment'
@@ -135,6 +139,19 @@ class CalcParser:
             return VariableNode(t.value)
 
         return self.parse_integer()
+
+    def parse_exponentiation(self):
+        left = self.parse_factor()
+
+        next_token = self.lexer.peek_token()
+
+        if next_token.type == clex.LITERAL and next_token.value == '^':
+            operator = self._parse_symbol()
+            right = self.parse_exponentiation()
+
+            return PowerNode(left, operator, right)
+
+        return left
 
     def parse_term(self):
         left = self.parse_factor()

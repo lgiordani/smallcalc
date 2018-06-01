@@ -461,3 +461,26 @@ def test_parse_line_supports_assigment():
             'value': 5
         }
     }
+
+
+def test_parse_exponentiation():
+    p = cpar.CalcParser()
+    p.lexer.load("2 ^ 3")
+
+    node = p.parse_exponentiation()
+
+    assert node.asdict() == {
+        'type': 'exponentiation',
+        'left': {
+            'type': 'integer',
+            'value': 2
+        },
+        'right': {
+            'type': 'integer',
+            'value': 3
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '^'
+        }
+    }
