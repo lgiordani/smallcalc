@@ -108,8 +108,9 @@ class CalcParser:
     def __init__(self):
         self.lexer = clex.CalcLexer()
 
-    def _parse_symbol(self):
+    def _parse_literal(self, values=None):
         t = self.lexer.get_token()
+
         return LiteralNode(t.value)
 
     def parse_integer(self):
@@ -124,7 +125,7 @@ class CalcParser:
         next_token = self.lexer.peek_token()
 
         if next_token.type == clex.LITERAL and next_token.value in ['-', '+']:
-            operator = self._parse_symbol()
+            operator = self._parse_literal()
             factor = self.parse_factor()
             return UnaryNode(operator, factor)
 
@@ -146,7 +147,7 @@ class CalcParser:
         next_token = self.lexer.peek_token()
 
         if next_token.type == clex.LITERAL and next_token.value == '^':
-            operator = self._parse_symbol()
+            operator = self._parse_literal()
             right = self.parse_exponentiation()
 
             return PowerNode(left, operator, right)
@@ -160,7 +161,7 @@ class CalcParser:
 
         while next_token.type == clex.LITERAL\
                 and next_token.value in ['*', '/']:
-            operator = self._parse_symbol()
+            operator = self._parse_literal()
             right = self.parse_exponentiation()
 
             left = BinaryNode(left, operator, right)
@@ -176,7 +177,7 @@ class CalcParser:
 
         while next_token.type == clex.LITERAL\
                 and next_token.value in ['+', '-']:
-            operator = self._parse_symbol()
+            operator = self._parse_literal()
             right = self.parse_term()
 
             left = BinaryNode(left, operator, right)
