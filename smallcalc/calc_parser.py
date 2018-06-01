@@ -135,10 +135,10 @@ class CalcParser:
             content = self.parse_factor()
             return UnaryNode(operator, content)
 
-        if next_token.type == clex.LITERAL and next_token.value == '(':
-            self.lexer.discard_type(clex.LITERAL)
+        with self.lexer:
+            self._parse_literal(['('])
             expression = self.parse_expression()
-            self.lexer.discard_type(clex.LITERAL)
+            self._parse_literal([')'])
             return expression
 
         if next_token.type == clex.NAME:
