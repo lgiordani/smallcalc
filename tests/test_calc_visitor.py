@@ -11,6 +11,16 @@ def test_visitor_integer():
     assert v.visit(ast) == (12, 'integer')
 
 
+def test_visitor_float():
+    ast = {
+        'type': 'float',
+        'value': 12.345
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (12.345, 'float')
+
+
 def test_visitor_expression_sum():
     ast = {
         'type': 'binary',
@@ -239,3 +249,24 @@ def test_visitor_exponentiation():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (8, 'integer')
+
+
+def test_visitor_expression_sum_with_float():
+    ast = {
+        'type': 'binary',
+        'left': {
+            'type': 'float',
+            'value': 5.1
+        },
+        'right': {
+            'type': 'integer',
+            'value': 4
+        },
+        'operator': {
+            'type': 'literal',
+            'value': '+'
+        }
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) == (9.1, 'float')

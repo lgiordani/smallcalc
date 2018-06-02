@@ -13,7 +13,7 @@ class CalcVisitor:
         return self.variables[name]['type']
 
     def visit(self, node):
-        if node['type'] == 'integer':
+        if node['type'] in ['integer', 'float']:
             return node['value'], node['type']
 
         if node['type'] == 'variable':
@@ -33,6 +33,9 @@ class CalcVisitor:
             rvalue, rtype = self.visit(node['right'])
 
             operator = node['operator']['value']
+
+            if ltype == 'float':
+                rtype = ltype
 
             if operator == '+':
                 return lvalue + rvalue, rtype
