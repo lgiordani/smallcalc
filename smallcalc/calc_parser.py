@@ -29,6 +29,10 @@ class IntegerNode(ValueNode):
         self.value = int(value)
 
 
+class FloatNode(ValueNode):
+    node_type = 'float'
+
+
 class LiteralNode(ValueNode):
 
     node_type = 'literal'
@@ -119,13 +123,15 @@ class CalcParser:
 
         return LiteralNode(t.value)
 
-    def parse_integer(self):
+    def parse_number(self):
         t = self.lexer.get_token()
 
-        if t.type != clex.INTEGER:
-            raise clex.TokenError
+        if t.type == clex.INTEGER:
+            return IntegerNode(int(t.value))
+        elif t.type == clex.FLOAT:
+            return FloatNode(float(t.value))
 
-        return IntegerNode(t.value)
+        raise clex.TokenError
 
     def _parse_variable(self):
         t = self.lexer.get_token()
@@ -150,7 +156,7 @@ class CalcParser:
         with self.lexer:
             return self._parse_variable()
 
-        return self.parse_integer()
+        return self.parse_number()
 
     def parse_exponentiation(self):
         left = self.parse_factor()

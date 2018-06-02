@@ -5,11 +5,23 @@ def test_parse_integer():
     p = cpar.CalcParser()
     p.lexer.load("5")
 
-    node = p.parse_integer()
+    node = p.parse_number()
 
     assert node.asdict() == {
         'type': 'integer',
         'value': 5
+    }
+
+
+def test_parse_float():
+    p = cpar.CalcParser()
+    p.lexer.load("5.8")
+
+    node = p.parse_number()
+
+    assert node.asdict() == {
+        'type': 'float',
+        'value': 5.8
     }
 
 
