@@ -279,3 +279,15 @@ def test_lexer_as_context_manager_restores_the_status_if_token_error():
         raise clex.TokenError
 
     assert l.get_token() == token.Token(clex.INTEGER, 3)
+
+
+def test_get_tokens_understands_floats():
+    l = clex.CalcLexer()
+
+    l.load('3.6')
+
+    assert l.get_tokens() == [
+        token.Token(clex.FLOAT, '3.6'),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF)
+    ]

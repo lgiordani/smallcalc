@@ -5,6 +5,7 @@ from smallcalc import tok as token
 
 EOF = 'EOF'
 EOL = 'EOL'
+FLOAT = 'FLOAT'
 INTEGER = 'INTEGER'
 LITERAL = 'LITERAL'
 NAME = 'NAME'
@@ -101,8 +102,8 @@ class CalcLexer:
             token.Token(LITERAL, self._current_char)
         )
 
-    def _process_integer(self):
-        regexp = re.compile('\d+')
+    def _process_number(self):
+        regexp = re.compile('[\d\.]+')
 
         match = regexp.match(
             self._text_storage.tail
@@ -113,8 +114,10 @@ class CalcLexer:
 
         token_string = match.group()
 
+        token_type = FLOAT if '.' in token_string else INTEGER
+
         return self._set_current_token_and_skip(
-            token.Token(INTEGER, int(token_string))
+            token.Token(token_type, token_string)
         )
 
     def _process_name(self):
@@ -164,9 +167,9 @@ class CalcLexer:
         if name:
             return name
 
-        integer = self._process_integer()
-        if integer:
-            return integer
+        number = self._process_number()
+        if number:
+            return number
 
         literal = self._process_literal()
         if literal:
