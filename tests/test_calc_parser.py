@@ -125,27 +125,27 @@ def test_parse_term_with_multiple_operations():
     assert node.asdict() == {
         'type': 'binary',
         'left': {
+            'type': 'integer',
+            'value': 2
+        },
+        'right': {
             'type': 'binary',
             'left': {
                 'type': 'integer',
-                'value': 2
+                'value': 3
             },
             'right': {
                 'type': 'integer',
-                'value': 3
+                'value': 4
             },
             'operator': {
                 'type': 'literal',
-                'value': '*'
+                'value': '/'
             }
-        },
-        'right': {
-            'type': 'integer',
-            'value': 4
         },
         'operator': {
             'type': 'literal',
-            'value': '/'
+            'value': '*'
         }
     }
 

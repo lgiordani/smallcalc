@@ -121,6 +121,10 @@ class CalcParser:
 
     def parse_integer(self):
         t = self.lexer.get_token()
+
+        if t.type != clex.INTEGER:
+            raise clex.TokenError
+
         return IntegerNode(t.value)
 
     def _parse_variable(self):
@@ -162,16 +166,11 @@ class CalcParser:
     def parse_term(self):
         left = self.parse_exponentiation()
 
-        next_token = self.lexer.peek_token()
+        with self.lexer:
+            operator = self._parse_literal(['*', '/'])
+            right = self.parse_term()
 
-        while next_token.type == clex.LITERAL\
-                and next_token.value in ['*', '/']:
-            operator = self._parse_literal()
-            right = self.parse_exponentiation()
-
-            left = BinaryNode(left, operator, right)
-
-            next_token = self.lexer.peek_token()
+            return BinaryNode(left, operator, right)
 
         return left
 
