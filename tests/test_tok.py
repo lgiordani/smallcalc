@@ -64,10 +64,10 @@ def test_token_length():
     assert bool(t) is True
 
 
-def test_empty_token_has_length_zero():
+def test_empty_token_has_the_length_of_the_type_itself():
     t = token.Token("sometype")
 
-    assert len(t) == 0
+    assert len(t) == len("sometype")
     assert bool(t) is True
 
 

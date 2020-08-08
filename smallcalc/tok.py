@@ -21,10 +21,7 @@ class Token:
         return (self.type, self.value) == (other.type, other.value)
 
     def __len__(self):
-        if self.value:
-            return len(self.value)
-
-        return 0
+        return len(self.value) if self.value else len(self.type)
 
     def __bool__(self):
         return True
