@@ -3,12 +3,17 @@ import re
 from smallcalc import text_buffer
 from smallcalc import tok as token
 
+BEGIN = "BEGIN"
+DOT = "DOT"
+END = "END"
 EOF = "EOF"
 EOL = "EOL"
 FLOAT = "FLOAT"
 INTEGER = "INTEGER"
 LITERAL = "LITERAL"
 NAME = "NAME"
+
+RESERVED_KEYWORDS = [BEGIN, END]
 
 
 class TokenError(ValueError):
@@ -80,6 +85,14 @@ class CalcLexer:
         except text_buffer.EOFError:
             return self._set_current_token_and_skip(token.Token(EOF))
 
+    def _process_dot(self):
+        regexp = re.compile(r"\.$")
+
+        match = regexp.match(self._text_storage.tail)
+
+        if match:
+            return self._set_current_token_and_skip(token.Token(DOT))
+
     def _process_whitespace(self):
         regexp = re.compile(r"\ +")
 
@@ -119,7 +132,12 @@ class CalcLexer:
 
         token_string = match.group()
 
-        return self._set_current_token_and_skip(token.Token(NAME, token_string))
+        if token_string in RESERVED_KEYWORDS:
+            tok = token.Token(token_string)
+        else:
+            tok = token.Token(NAME, token_string)
+
+        return self._set_current_token_and_skip(tok)
 
     def discard(self, token):
         if self.get_token() != token:
@@ -145,6 +163,10 @@ class CalcLexer:
         eol = self._process_eol()
         if eol:
             return eol
+
+        dot = self._process_dot()
+        if dot:
+            return dot
 
         self._process_whitespace()
 
@@ -175,6 +197,7 @@ class CalcLexer:
     def peek_token(self):
         self.stash()
         token = self.get_token()
+
         self.pop()
 
         return token
