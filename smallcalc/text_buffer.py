@@ -9,7 +9,6 @@ class EOFError(ValueError):
 
 
 class TextBuffer:
-
     def __init__(self, text=None):
         self.load(text)
 
@@ -19,7 +18,7 @@ class TextBuffer:
 
     def load(self, text):
         self.text = text
-        self.lines = text.split('\n') if text else []
+        self.lines = text.split("\n") if text else []
         self.reset()
 
     @property
@@ -27,9 +26,7 @@ class TextBuffer:
         try:
             return self.lines[self.line]
         except IndexError:
-            raise EOFError(
-                "EOF reading line {}".format(self.line)
-            )
+            raise EOFError("EOF reading line {}".format(self.line))
 
     @property
     def current_char(self):
@@ -37,9 +34,7 @@ class TextBuffer:
             return self.current_line[self.column]
         except IndexError:
             raise EOLError(
-                "EOL reading column {} at line {}".format(
-                    self.column, self.line
-                )
+                "EOL reading column {} at line {}".format(self.column, self.line)
             )
 
     @property
@@ -48,14 +43,12 @@ class TextBuffer:
             return self.current_line[self.column + 1]
         except IndexError:
             raise EOLError(
-                "EOL reading column {} at line {}".format(
-                    self.column, self.line
-                )
+                "EOL reading column {} at line {}".format(self.column, self.line)
             )
 
     @property
     def tail(self):
-        return self.current_line[self.column:]
+        return self.current_line[self.column :]
 
     @property
     def position(self):

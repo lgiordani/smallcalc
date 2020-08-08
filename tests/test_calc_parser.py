@@ -7,10 +7,7 @@ def test_parse_integer():
 
     node = p.parse_number()
 
-    assert node.asdict() == {
-        'type': 'integer',
-        'value': 5
-    }
+    assert node.asdict() == {"type": "integer", "value": 5}
 
 
 def test_parse_float():
@@ -19,10 +16,7 @@ def test_parse_float():
 
     node = p.parse_number()
 
-    assert node.asdict() == {
-        'type': 'float',
-        'value': 5.8
-    }
+    assert node.asdict() == {"type": "float", "value": 5.8}
 
 
 def test_parse_expression():
@@ -32,19 +26,10 @@ def test_parse_expression():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '+'
-        }
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {"type": "integer", "value": 3},
+        "operator": {"type": "literal", "value": "+"},
     }
 
 
@@ -55,19 +40,10 @@ def test_parse_expression_understands_subtraction():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '-'
-        }
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {"type": "integer", "value": 3},
+        "operator": {"type": "literal", "value": "-"},
     }
 
 
@@ -78,30 +54,15 @@ def test_parse_expression_with_multiple_operations():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 3},
+            "right": {"type": "integer", "value": 4},
+            "operator": {"type": "literal", "value": "-"},
         },
-        'right': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 3
-            },
-            'right': {
-                'type': 'integer',
-                'value': 4
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '-'
-            }
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '+'
-        }
+        "operator": {"type": "literal", "value": "+"},
     }
 
 
@@ -112,19 +73,10 @@ def test_parse_term():
     node = p.parse_term()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '*'
-        }
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {"type": "integer", "value": 3},
+        "operator": {"type": "literal", "value": "*"},
     }
 
 
@@ -135,30 +87,15 @@ def test_parse_term_with_multiple_operations():
     node = p.parse_term()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 3},
+            "right": {"type": "integer", "value": 4},
+            "operator": {"type": "literal", "value": "/"},
         },
-        'right': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 3
-            },
-            'right': {
-                'type': 'integer',
-                'value': 4
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '/'
-            }
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '*'
-        }
+        "operator": {"type": "literal", "value": "*"},
     }
 
 
@@ -169,30 +106,15 @@ def test_parse_expression_with_term():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 3},
+            "right": {"type": "integer", "value": 4},
+            "operator": {"type": "literal", "value": "*"},
         },
-        'right': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 3
-            },
-            'right': {
-                'type': 'integer',
-                'value': 4
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '*'
-            }
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '+'
-        }
+        "operator": {"type": "literal", "value": "+"},
     }
 
 
@@ -203,19 +125,10 @@ def test_parse_expression_with_parentheses():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'integer',
-            'value': 2
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '+'
-        }
+        "type": "binary",
+        "left": {"type": "integer", "value": 2},
+        "right": {"type": "integer", "value": 3},
+        "operator": {"type": "literal", "value": "+"},
     }
 
 
@@ -226,30 +139,15 @@ def test_parse_parentheses_change_priority():
     node = p.parse_expression()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 2
-            },
-            'right': {
-                'type': 'integer',
-                'value': 3
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '+'
-            }
+        "type": "binary",
+        "left": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 2},
+            "right": {"type": "integer", "value": 3},
+            "operator": {"type": "literal", "value": "+"},
         },
-        'right': {
-            'type': 'integer',
-            'value': 4
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '*'
-        }
+        "right": {"type": "integer", "value": 4},
+        "operator": {"type": "literal", "value": "*"},
     }
 
 
@@ -260,15 +158,9 @@ def test_parse_factor_supports_unary_operator():
     node = p.parse_factor()
 
     assert node.asdict() == {
-        'type': 'unary',
-        'operator': {
-            'type': 'literal',
-            'value': '-'
-        },
-        'content': {
-            'type': 'integer',
-            'value': 5
-        }
+        "type": "unary",
+        "operator": {"type": "literal", "value": "-"},
+        "content": {"type": "integer", "value": 5},
     }
 
 
@@ -279,26 +171,14 @@ def test_parse_factor_supports_negative_expressions():
     node = p.parse_factor()
 
     assert node.asdict() == {
-        'type': 'unary',
-        'operator': {
-            'type': 'literal',
-            'value': '-'
+        "type": "unary",
+        "operator": {"type": "literal", "value": "-"},
+        "content": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 2},
+            "right": {"type": "integer", "value": 3},
+            "operator": {"type": "literal", "value": "+"},
         },
-        'content': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 2
-            },
-            'right': {
-                'type': 'integer',
-                'value': 3
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '+'
-            }
-        }
     }
 
 
@@ -309,26 +189,14 @@ def test_parse_factor_supports_unary_plus():
     node = p.parse_factor()
 
     assert node.asdict() == {
-        'type': 'unary',
-        'operator': {
-            'type': 'literal',
-            'value': '+'
+        "type": "unary",
+        "operator": {"type": "literal", "value": "+"},
+        "content": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 2},
+            "right": {"type": "integer", "value": 3},
+            "operator": {"type": "literal", "value": "+"},
         },
-        'content': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 2
-            },
-            'right': {
-                'type': 'integer',
-                'value': 3
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '+'
-            }
-        }
     }
 
 
@@ -338,10 +206,7 @@ def test_parse_factor_variable():
 
     node = p.parse_factor()
 
-    assert node.asdict() == {
-        'type': 'variable',
-        'value': 'somevar'
-    }
+    assert node.asdict() == {"type": "variable", "value": "somevar"}
 
 
 def test_parse_assignment():
@@ -351,12 +216,9 @@ def test_parse_assignment():
     node = p.parse_assignment()
 
     assert node.asdict() == {
-        'type': 'assignment',
-        'variable': 'x',
-        'value': {
-            'type': 'integer',
-            'value': 5
-        }
+        "type": "assignment",
+        "variable": "x",
+        "value": {"type": "integer", "value": 5},
     }
 
 
@@ -367,34 +229,19 @@ def test_parse_assignment_with_expression():
     node = p.parse_assignment()
 
     assert node.asdict() == {
-        'type': 'assignment',
-        'variable': 'x',
-        'value': {
-            'type': 'binary',
-            'operator': {
-                'type': 'literal',
-                'value': '*'
+        "type": "assignment",
+        "variable": "x",
+        "value": {
+            "type": "binary",
+            "operator": {"type": "literal", "value": "*"},
+            "left": {"type": "integer", "value": 4},
+            "right": {
+                "type": "binary",
+                "operator": {"type": "literal", "value": "+"},
+                "left": {"type": "integer", "value": 3},
+                "right": {"type": "integer", "value": 5},
             },
-            'left': {
-                'type': 'integer',
-                'value': 4
-            },
-            'right': {
-                'type': 'binary',
-                'operator': {
-                    'type': 'literal',
-                    'value': '+'
-                },
-                'left': {
-                    'type': 'integer',
-                    'value': 3
-                },
-                'right': {
-                    'type': 'integer',
-                    'value': 5
-                }
-            }
-        }
+        },
     }
 
 
@@ -407,21 +254,12 @@ def test_parse_assignment_expression_with_variables():
     assert node.asdict() == {
         "type": "assignment",
         "variable": "x",
-        'value': {
-            'type': 'binary',
-            'operator': {
-                'type': 'literal',
-                'value': '+'
-            },
-            'left': {
-                'type': 'variable',
-                'value': 'y'
-            },
-            'right': {
-                'type': 'integer',
-                'value': 4
-            },
-        }
+        "value": {
+            "type": "binary",
+            "operator": {"type": "literal", "value": "+"},
+            "left": {"type": "variable", "value": "y"},
+            "right": {"type": "integer", "value": 4},
+        },
     }
 
 
@@ -432,30 +270,15 @@ def test_parse_line_supports_expression():
     node = p.parse_line()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'left': {
-            'type': 'binary',
-            'left': {
-                'type': 'integer',
-                'value': 2
-            },
-            'right': {
-                'type': 'variable',
-                'value': 'x'
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '*'
-            }
+        "type": "binary",
+        "left": {
+            "type": "binary",
+            "left": {"type": "integer", "value": 2},
+            "right": {"type": "variable", "value": "x"},
+            "operator": {"type": "literal", "value": "*"},
         },
-        'right': {
-            'type': 'integer',
-            'value': 4
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '+'
-        }
+        "right": {"type": "integer", "value": 4},
+        "operator": {"type": "literal", "value": "+"},
     }
 
 
@@ -466,12 +289,9 @@ def test_parse_line_supports_assigment():
     node = p.parse_line()
 
     assert node.asdict() == {
-        'type': 'assignment',
-        'variable': 'x',
-        'value': {
-            'type': 'integer',
-            'value': 5
-        }
+        "type": "assignment",
+        "variable": "x",
+        "value": {"type": "integer", "value": 5},
     }
 
 
@@ -482,19 +302,10 @@ def test_parse_exponentiation():
     node = p.parse_exponentiation()
 
     assert node.asdict() == {
-        'type': 'exponentiation',
-        'left': {
-            'type': 'integer',
-            'value': 2
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        },
-        'operator': {
-            'type': 'literal',
-            'value': '^'
-        }
+        "type": "exponentiation",
+        "left": {"type": "integer", "value": 2},
+        "right": {"type": "integer", "value": 3},
+        "operator": {"type": "literal", "value": "^"},
     }
 
 
@@ -505,30 +316,15 @@ def test_parse_exponentiation_with_other_operators():
     node = p.parse_term()
 
     assert node.asdict() == {
-        'type': 'binary',
-        'operator': {
-            'type': 'literal',
-            'value': '*'
+        "type": "binary",
+        "operator": {"type": "literal", "value": "*"},
+        "left": {"type": "integer", "value": 3},
+        "right": {
+            "type": "exponentiation",
+            "left": {"type": "integer", "value": 2},
+            "right": {"type": "integer", "value": 3},
+            "operator": {"type": "literal", "value": "^"},
         },
-        'left': {
-            'type': 'integer',
-            'value': 3
-        },
-        'right': {
-            'type': 'exponentiation',
-            'left': {
-                'type': 'integer',
-                'value': 2
-            },
-            'right': {
-                'type': 'integer',
-                'value': 3
-            },
-            'operator': {
-                'type': 'literal',
-                'value': '^'
-            }
-        }
     }
 
 
@@ -539,30 +335,15 @@ def test_parse_exponentiation_with_parenthesis():
     node = p.parse_term()
 
     assert node.asdict() == {
-        'type': 'exponentiation',
-        'operator': {
-            'type': 'literal',
-            'value': '^'
+        "type": "exponentiation",
+        "operator": {"type": "literal", "value": "^"},
+        "left": {
+            "type": "binary",
+            "operator": {"type": "literal", "value": "+"},
+            "left": {"type": "integer", "value": 3},
+            "right": {"type": "integer", "value": 2},
         },
-        'left': {
-            'type': 'binary',
-            'operator': {
-                'type': 'literal',
-                'value': '+'
-            },
-            'left': {
-                'type': 'integer',
-                'value': 3
-            },
-            'right': {
-                'type': 'integer',
-                'value': 2
-            }
-        },
-        'right': {
-            'type': 'integer',
-            'value': 3
-        }
+        "right": {"type": "integer", "value": 3},
     }
 
 
@@ -573,24 +354,12 @@ def test_parse_exponentiation_with_negative_base():
     node = p.parse_exponentiation()
 
     assert node.asdict() == {
-        'type': 'exponentiation',
-        'operator': {
-            'type': 'literal',
-            'value': '^'
+        "type": "exponentiation",
+        "operator": {"type": "literal", "value": "^"},
+        "left": {
+            "type": "unary",
+            "operator": {"type": "literal", "value": "-"},
+            "content": {"type": "integer", "value": 2},
         },
-        'left': {
-            'type': 'unary',
-            'operator': {
-                'type': 'literal',
-                'value': '-'
-            },
-            'content': {
-                'type': 'integer',
-                'value': 2
-            }
-        },
-        'right': {
-            'type': 'integer',
-            'value': 2
-        }
+        "right": {"type": "integer", "value": 2},
     }

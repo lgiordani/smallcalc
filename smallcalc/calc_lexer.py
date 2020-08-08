@@ -3,12 +3,12 @@ import re
 from smallcalc import text_buffer
 from smallcalc import tok as token
 
-EOF = 'EOF'
-EOL = 'EOL'
-FLOAT = 'FLOAT'
-INTEGER = 'INTEGER'
-LITERAL = 'LITERAL'
-NAME = 'NAME'
+EOF = "EOF"
+EOL = "EOL"
+FLOAT = "FLOAT"
+INTEGER = "INTEGER"
+LITERAL = "LITERAL"
+NAME = "NAME"
 
 
 class TokenError(ValueError):
@@ -17,8 +17,7 @@ class TokenError(ValueError):
 
 
 class CalcLexer:
-
-    def __init__(self, text=''):
+    def __init__(self, text=""):
         self._text_storage = text_buffer.TextBuffer(text)
         self._status = []
         self._current_token = None
@@ -47,8 +46,8 @@ class CalcLexer:
     @property
     def _current_status(self):
         status = {}
-        status['text_storage'] = self._text_storage.position
-        status['current_token'] = self._current_token
+        status["text_storage"] = self._text_storage.position
+        status["current_token"] = self._current_token
         return status
 
     def stash(self):
@@ -56,8 +55,8 @@ class CalcLexer:
 
     def pop(self):
         status = self._status.pop()
-        self._text_storage.goto(*status['text_storage'])
-        self._current_token = status['current_token']
+        self._text_storage.goto(*status["text_storage"])
+        self._current_token = status["current_token"]
 
     def _set_current_token_and_skip(self, token):
         self._text_storage.skip(len(token))
@@ -72,25 +71,19 @@ class CalcLexer:
         except text_buffer.EOLError:
             self._text_storage.newline()
 
-            return self._set_current_token_and_skip(
-                token.Token(EOL)
-            )
+            return self._set_current_token_and_skip(token.Token(EOL))
 
     def _process_eof(self):
         try:
             self._current_line
             return None
         except text_buffer.EOFError:
-            return self._set_current_token_and_skip(
-                token.Token(EOF)
-            )
+            return self._set_current_token_and_skip(token.Token(EOF))
 
     def _process_whitespace(self):
-        regexp = re.compile('\ +')
+        regexp = re.compile(r"\ +")
 
-        match = regexp.match(
-            self._text_storage.tail
-        )
+        match = regexp.match(self._text_storage.tail)
 
         if not match:
             return None
@@ -103,54 +96,46 @@ class CalcLexer:
         )
 
     def _process_number(self):
-        regexp = re.compile('[\d\.]+')
+        regexp = re.compile(r"[\d\.]+")
 
-        match = regexp.match(
-            self._text_storage.tail
-        )
+        match = regexp.match(self._text_storage.tail)
 
         if not match:
             return None
 
         token_string = match.group()
 
-        token_type = FLOAT if '.' in token_string else INTEGER
+        token_type = FLOAT if "." in token_string else INTEGER
 
-        return self._set_current_token_and_skip(
-            token.Token(token_type, token_string)
-        )
+        return self._set_current_token_and_skip(token.Token(token_type, token_string))
 
     def _process_name(self):
-        regexp = re.compile('[a-zA-Z_]+')
+        regexp = re.compile(r"[a-zA-Z_]+")
 
-        match = regexp.match(
-            self._text_storage.tail
-        )
+        match = regexp.match(self._text_storage.tail)
 
         if not match:
             return None
 
         token_string = match.group()
 
-        return self._set_current_token_and_skip(
-            token.Token(NAME, token_string)
-        )
+        return self._set_current_token_and_skip(token.Token(NAME, token_string))
 
     def discard(self, token):
         if self.get_token() != token:
             raise TokenError(
-                'Expected token {}, found {}'.format(
-                    token, self._current_token
-                ))
+                "Expected token {}, found {}".format(token, self._current_token)
+            )
 
     def discard_type(self, _type):
         t = self.get_token()
 
         if t.type != _type:
             raise TokenError(
-                'Expected token of type {}, found {}'.format(
+                "Expected token of type {}, found {}".format(
                     _type, self._current_token.type
-                ))
+                )
+            )
 
     def get_token(self):
         eof = self._process_eof()
@@ -179,11 +164,11 @@ class CalcLexer:
         t = self.get_token()
         tokens = []
 
-        while t != token.Token('EOF'):
+        while t != token.Token("EOF"):
             tokens.append(t)
             t = self.get_token()
 
-        tokens.append(token.Token('EOF'))
+        tokens.append(token.Token("EOF"))
 
         return tokens
 
