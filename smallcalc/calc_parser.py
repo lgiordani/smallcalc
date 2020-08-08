@@ -185,6 +185,7 @@ class CalcParser:
 
     def parse_assignment(self):
         variable = self._parse_variable()
+        self.lexer.discard(token.Token(clex.LITERAL, ":"))
         self.lexer.discard(token.Token(clex.LITERAL, "="))
         value = self.parse_expression()
 

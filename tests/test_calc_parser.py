@@ -211,7 +211,7 @@ def test_parse_factor_variable():
 
 def test_parse_assignment():
     p = cpar.CalcParser()
-    p.lexer.load("x = 5")
+    p.lexer.load("x := 5")
 
     node = p.parse_assignment()
 
@@ -224,7 +224,7 @@ def test_parse_assignment():
 
 def test_parse_assignment_with_expression():
     p = cpar.CalcParser()
-    p.lexer.load("x = 4 * (3 + 5)")
+    p.lexer.load("x := 4 * (3 + 5)")
 
     node = p.parse_assignment()
 
@@ -247,7 +247,7 @@ def test_parse_assignment_with_expression():
 
 def test_parse_assignment_expression_with_variables():
     p = cpar.CalcParser()
-    p.lexer.load("x = y + 4")
+    p.lexer.load("x := y + 4")
 
     node = p.parse_assignment()
 
@@ -284,7 +284,7 @@ def test_parse_line_supports_expression():
 
 def test_parse_line_supports_assigment():
     p = cpar.CalcParser()
-    p.lexer.load("x = 5")
+    p.lexer.load("x := 5")
 
     node = p.parse_line()
 
