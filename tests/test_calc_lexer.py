@@ -211,13 +211,13 @@ def test_get_tokens_understands_letters():
     ]
 
 
-def test_get_tokens_understands_uppercase_letters():
+def test_get_tokens_is_case_insensitive():
     l = clex.CalcLexer()
 
     l.load("SomeVar")
 
     assert l.get_tokens() == [
-        token.Token(clex.NAME, "SomeVar"),
+        token.Token(clex.NAME, "somevar"),
         token.Token(clex.EOL),
         token.Token(clex.EOF),
     ]
@@ -295,6 +295,19 @@ def test_get_tokens_understands_begin_and_end():
     l = clex.CalcLexer()
 
     l.load("BEGIN END")
+
+    assert l.get_tokens() == [
+        token.Token(clex.BEGIN),
+        token.Token(clex.END),
+        token.Token(clex.EOL),
+        token.Token(clex.EOF),
+    ]
+
+
+def test_get_tokens_understands_begin_and_end_case_insensitive():
+    l = clex.CalcLexer()
+
+    l.load("begin end")
 
     assert l.get_tokens() == [
         token.Token(clex.BEGIN),

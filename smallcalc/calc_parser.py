@@ -240,6 +240,12 @@ class CalcParser:
 
         return CompoundStatementNode(nodes)
 
+    def parse_program(self):
+        compound_statement = self.parse_compound_statement()
+        self.lexer.discard(token.Token(clex.DOT))
+
+        return compound_statement
+
     def parse_line(self):
         with self.lexer:
             return self.parse_assignment()

@@ -132,10 +132,10 @@ class CalcLexer:
 
         token_string = match.group()
 
-        if token_string in RESERVED_KEYWORDS:
-            tok = token.Token(token_string)
+        if token_string.upper() in RESERVED_KEYWORDS:
+            tok = token.Token(token_string.upper())
         else:
-            tok = token.Token(NAME, token_string)
+            tok = token.Token(NAME, token_string.lower())
 
         return self._set_current_token_and_skip(tok)
 

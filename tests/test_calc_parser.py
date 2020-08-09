@@ -1,4 +1,7 @@
+import pytest
+
 from smallcalc import calc_parser as cpar
+from smallcalc.calc_lexer import TokenError
 
 
 def test_parse_integer():
@@ -438,6 +441,56 @@ def test_parse_compound_statement_multiple_statements_with_compund_statement():
     p.lexer.load("BEGIN x:= 5; BEGIN y := 6 END ; z:=7 END")
 
     node = p.parse_compound_statement()
+
+    assert node.asdict() == {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            },
+            {
+                "type": "compound_statement",
+                "statements": [
+                    {
+                        "type": "assignment",
+                        "variable": "y",
+                        "value": {"type": "integer", "value": 6},
+                    }
+                ],
+            },
+            {
+                "type": "assignment",
+                "variable": "z",
+                "value": {"type": "integer", "value": 7},
+            },
+        ],
+    }
+
+
+def test_parse_empty_program():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN END.")
+
+    node = p.parse_program()
+
+    assert node.asdict() == {"type": "compound_statement", "statements": []}
+
+
+def test_parse_program_requires_the_final_dot():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN END")
+
+    with pytest.raises(TokenError):
+        p.parse_program()
+
+
+def test_parse_program_with_nested_statements():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN x:= 5; BEGIN y := 6 END ; z:=7 END.")
+
+    node = p.parse_program()
 
     assert node.asdict() == {
         "type": "compound_statement",
