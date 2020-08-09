@@ -209,23 +209,32 @@ class CalcParser:
         with self.lexer:
             return self.parse_assignment()
 
+        return self.parse_compound_statement()
+
+    def parse_statement_list(self):
+        nodes = []
+
+        statement_node = self.parse_statement()
+        if statement_node:
+            nodes.append(statement_node)
+
+        while self.lexer.peek_token() == token.Token(clex.LITERAL, ";"):
+            self.lexer.discard(token.Token(clex.LITERAL, ";"))
+
+            statement_node = self.parse_statement()
+
+            if statement_node:
+                nodes.append(statement_node)
+
+        return nodes
+
     def parse_compound_statement(self):
         nodes = []
 
         self.lexer.discard(token.Token(clex.BEGIN))
 
         with self.lexer:
-            statement_node = self.parse_statement()
-            if statement_node:
-                nodes.append(statement_node)
-
-            while self.lexer.peek_token() == token.Token(clex.LITERAL, ";"):
-                self.lexer.discard(token.Token(clex.LITERAL, ";"))
-
-                statement_node = self.parse_statement()
-
-                if statement_node:
-                    nodes.append(statement_node)
+            nodes = self.parse_statement_list()
 
         self.lexer.discard(token.Token(clex.END))
 

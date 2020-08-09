@@ -162,3 +162,103 @@ def test_visitor_expression_sum_with_float():
 
     v = cvis.CalcVisitor()
     assert v.visit(ast) == (9.1, "float")
+
+
+def test_visitor_compound_statement_one_statement():
+    ast = {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            }
+        ],
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) is None
+    assert v.isvariable("x") is True
+    assert v.valueof("x") == 5
+    assert v.typeof("x") == "integer"
+
+
+def test_visitor_compound_statement_multiple_statements():
+    ast = {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            },
+            {
+                "type": "assignment",
+                "variable": "y",
+                "value": {"type": "integer", "value": 6},
+            },
+            {
+                "type": "assignment",
+                "variable": "z",
+                "value": {"type": "integer", "value": 7},
+            },
+        ],
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) is None
+
+    assert v.isvariable("x") is True
+    assert v.valueof("x") == 5
+    assert v.typeof("x") == "integer"
+
+    assert v.isvariable("y") is True
+    assert v.valueof("y") == 6
+    assert v.typeof("y") == "integer"
+
+    assert v.isvariable("z") is True
+    assert v.valueof("z") == 7
+    assert v.typeof("z") == "integer"
+
+
+def test_visitor_compound_statement_multiple_statements_with_compund_statement():
+    ast = {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            },
+            {
+                "type": "compound_statement",
+                "statements": [
+                    {
+                        "type": "assignment",
+                        "variable": "y",
+                        "value": {"type": "integer", "value": 6},
+                    }
+                ],
+            },
+            {
+                "type": "assignment",
+                "variable": "z",
+                "value": {"type": "integer", "value": 7},
+            },
+        ],
+    }
+
+    v = cvis.CalcVisitor()
+    assert v.visit(ast) is None
+
+    assert v.isvariable("x") is True
+    assert v.valueof("x") == 5
+    assert v.typeof("x") == "integer"
+
+    assert v.isvariable("y") is True
+    assert v.valueof("y") == 6
+    assert v.typeof("y") == "integer"
+
+    assert v.isvariable("z") is True
+    assert v.valueof("z") == 7
+    assert v.typeof("z") == "integer"

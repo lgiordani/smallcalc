@@ -59,3 +59,6 @@ class CalcVisitor:
             rvalue, rtype = self.visit(node["right"])
 
             return lvalue ** rvalue, ltype
+
+        if node["type"] == "compound_statement":
+            [self.visit(node) for node in node["statements"]]

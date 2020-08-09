@@ -431,3 +431,36 @@ def test_parse_compound_statement_multiple_statements():
             },
         ],
     }
+
+
+def test_parse_compound_statement_multiple_statements_with_compund_statement():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN x:= 5; BEGIN y := 6 END ; z:=7 END")
+
+    node = p.parse_compound_statement()
+
+    assert node.asdict() == {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            },
+            {
+                "type": "compound_statement",
+                "statements": [
+                    {
+                        "type": "assignment",
+                        "variable": "y",
+                        "value": {"type": "integer", "value": 6},
+                    }
+                ],
+            },
+            {
+                "type": "assignment",
+                "variable": "z",
+                "value": {"type": "integer", "value": 7},
+            },
+        ],
+    }
