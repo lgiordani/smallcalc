@@ -363,3 +363,71 @@ def test_parse_exponentiation_with_negative_base():
         },
         "right": {"type": "integer", "value": 2},
     }
+
+
+def test_parse_statement_assignment():
+    p = cpar.CalcParser()
+    p.lexer.load("x := 5")
+
+    node = p.parse_statement()
+
+    assert node.asdict() == {
+        "type": "assignment",
+        "variable": "x",
+        "value": {"type": "integer", "value": 5},
+    }
+
+
+def test_parse_empty_compound_statement():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN END")
+
+    node = p.parse_compound_statement()
+
+    assert node.asdict() == {"type": "compound_statement", "statements": []}
+
+
+def test_parse_compound_statement_one_statement():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN x:= 5 END")
+
+    node = p.parse_compound_statement()
+
+    assert node.asdict() == {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            }
+        ],
+    }
+
+
+def test_parse_compound_statement_multiple_statements():
+    p = cpar.CalcParser()
+    p.lexer.load("BEGIN x:= 5; y:=6; z:=7 END")
+
+    node = p.parse_compound_statement()
+
+    assert node.asdict() == {
+        "type": "compound_statement",
+        "statements": [
+            {
+                "type": "assignment",
+                "variable": "x",
+                "value": {"type": "integer", "value": 5},
+            },
+            {
+                "type": "assignment",
+                "variable": "y",
+                "value": {"type": "integer", "value": 6},
+            },
+            {
+                "type": "assignment",
+                "variable": "z",
+                "value": {"type": "integer", "value": 7},
+            },
+        ],
+    }

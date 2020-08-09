@@ -100,6 +100,20 @@ class AssignmentNode(Node):
         }
 
 
+class CompoundStatementNode(Node):
+
+    node_type = "compound_statement"
+
+    def __init__(self, statements=None):
+        self.statements = statements if statements else []
+
+    def asdict(self):
+        return {
+            "type": self.node_type,
+            "statements": [statement.asdict() for statement in self.statements],
+        }
+
+
 class CalcParser:
     def __init__(self):
         self.lexer = clex.CalcLexer()
@@ -190,6 +204,32 @@ class CalcParser:
         value = self.parse_expression()
 
         return AssignmentNode(variable, value)
+
+    def parse_statement(self):
+        with self.lexer:
+            return self.parse_assignment()
+
+    def parse_compound_statement(self):
+        nodes = []
+
+        self.lexer.discard(token.Token(clex.BEGIN))
+
+        with self.lexer:
+            statement_node = self.parse_statement()
+            if statement_node:
+                nodes.append(statement_node)
+
+            while self.lexer.peek_token() == token.Token(clex.LITERAL, ";"):
+                self.lexer.discard(token.Token(clex.LITERAL, ";"))
+
+                statement_node = self.parse_statement()
+
+                if statement_node:
+                    nodes.append(statement_node)
+
+        self.lexer.discard(token.Token(clex.END))
+
+        return CompoundStatementNode(nodes)
 
     def parse_line(self):
         with self.lexer:
